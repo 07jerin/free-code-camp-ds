@@ -2,7 +2,7 @@ package com.jerin.programiz.ds.tree;
 
 import com.jerin.common.structures.ds.Node;
 
-public class BinarySearchTree<T extends Comparable<T>> extends Tree<T> {
+public class BinarySearchTree<T extends Comparable<T>> extends NodeTree<T> {
 
 	public BinarySearchTree(Node<T> root) {
 		super(root);
@@ -21,71 +21,63 @@ public class BinarySearchTree<T extends Comparable<T>> extends Tree<T> {
 	}
 
 	public void delete(T data) {
-		deleteData(this.getRootNode(), data, this.getRootNode());
+		Node<T> root = deleteDataFromNode(this.getRootNode(), data);
+		this.setRootNode(root);
 	}
 
-	private boolean deleteData(Node<T> subTree, T data, Node<T> parentNode) {
-		boolean deleted = false;
-		T currentNodeData = subTree.getData();
-		if (currentNodeData.equals(data)) {
-			if (subTree.isLeafNode()) {
-				unlinkFromParent(subTree, parentNode);
-				subTree.setData(null);
-			} else {
-				traverseAndSwap(subTree, parentNode);
-			}
+	// All nodes have exactly 2 entries
+	public boolean isFullTree() {
+		return isFullTree(getRootNode());
+	}
+
+	// All Full tree + height is same for all leaf nodes
+	public boolean isPerfect() {
+		return getFullTreeDepth(getRootNode(), 0) != -1;
+	}
+
+	private int getFullTreeDepth(Node<T> subTree, int currentDepth) {
+		if (subTree.getLeftNode() == null && subTree.getRightNode() == null) {
+			return ++currentDepth;
+		}
+		if (subTree.getRightNode() == null || subTree.getLeftNode() == null) {
+			return -1;
+		}
+		currentDepth++;
+		int rightDepth = getFullTreeDepth(subTree.getRightNode(), currentDepth);
+		int newLeftDepth = getFullTreeDepth(subTree.getLeftNode(), currentDepth);
+		return rightDepth == newLeftDepth ? rightDepth : -1;
+	}
+
+	private boolean isFullTree(Node<T> subTree) {
+		if (subTree.getLeftNode() == null && subTree.getRightNode() == null) {
 			return true;
 		}
-
-		Node<T> nextSubTree = data.compareTo(currentNodeData) > 0 ? subTree.getRightNode() : subTree.getLeftNode();
-		if (nextSubTree != null) {
-			deleted = deleteData(nextSubTree, data, subTree);
+		if (subTree.getRightNode() == null || subTree.getLeftNode() == null) {
+			return false;
 		}
-
-		return deleted;
+		return isFullTree(subTree.getRightNode()) && isFullTree(subTree.getLeftNode());
 	}
 
-	private void unlinkFromParent(Node<T> subTree, Node<T> parentNode) {
-
-		if (parentNode.getLeftNode() != null && parentNode.getLeftNode().getData().equals(subTree.getData())) {
-			parentNode.setLeftNode(null);
+	private Node<T> deleteDataFromNode(Node<T> node, T data) {
+		if (node == null) {
+			return null;
+		}
+		if (node.getData().compareTo(data) > 0) {
+			node.setLeftNode(deleteDataFromNode(node.getLeftNode(), data));
+		} else if (node.getData().compareTo(data) < 0) {
+			node.setRightNode(deleteDataFromNode(node.getRightNode(), data));
 		} else {
-			parentNode.setRightNode(null);
+
+			if (node.getLeftNode() == null) {
+				return node.getRightNode();
+			} else if (node.getRightNode() == null) {
+				return node.getLeftNode();
+			}
+
+			node.setData(getMinValue(node.getRightNode()));
+			node.setRightNode(deleteDataFromNode(node.getRightNode(), node.getData()));
 		}
-	}
-
-	private void traverseAndSwap(Node<T> tree, Node<T> parentNode) {
-		// TODO: Height balancing
-		Node[] newNodes = null;
-		if (tree.getLeftNode() != null) {
-			newNodes = getLargestDataNode(tree.getLeftNode(), tree);
-		} else if (tree.getRightNode() != null) {
-			newNodes = getSmallestDataNode(tree.getRightNode(), tree);
-		} else {
-			unlinkFromParent(tree, parentNode);
-			return;
-		}
-
-		tree.setData((T) newNodes[0].getData());
-		traverseAndSwap(newNodes[0], newNodes[1]);
-
-	}
-
-	private Node[] getSmallestDataNode(Node<T> tree, Node<T> parentNode) {
-		if (tree.getLeftNode() == null) {
-			Node[] vals = { tree, parentNode };
-			return vals;
-		}
-		return getSmallestDataNode(tree.getLeftNode(), tree);
-	}
-
-	private Node[] getLargestDataNode(Node<T> tree, Node<T> parentNode) {
-
-		if (tree.getRightNode() == null) {
-			Node[] vals = { tree, parentNode };
-			return vals;
-		}
-		return getLargestDataNode(tree.getRightNode(), tree);
+		return node;
 	}
 
 	private void insertData(Node<T> tree, T newData) {
