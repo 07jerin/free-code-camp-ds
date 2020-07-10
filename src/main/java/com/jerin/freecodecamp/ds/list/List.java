@@ -10,14 +10,14 @@ public interface List<T> {
 
 	public boolean remove(int index) throws IndexOutOfBoundsException;
 
-	public int get(T element);
+	public int getIndexOf(T element);
 
 	public T get(int index);
-	
+
 	public int size();
-	
+
 	public boolean isEmpty();
-	
+
 	public void clear();
 
 }

@@ -2,8 +2,6 @@ package com.jerin.freecodecamp.ds.list;
 
 import java.util.Arrays;
 
-import org.omg.PortableServer.THREAD_POLICY_ID;
-
 public class ArrayList<T> implements List<T> {
 	private Object[] array;
 	private int size;
@@ -48,7 +46,7 @@ public class ArrayList<T> implements List<T> {
 		return false;
 	}
 
-	public int get(T element) {
+	public int getIndexOf(T element) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

@@ -22,7 +22,7 @@ public class SinlgeLinkedList<T> implements List<T> {
 		return false;
 	}
 
-	public int get(T element) {
+	public int getIndexOf(T element) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
