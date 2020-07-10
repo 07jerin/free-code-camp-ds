@@ -20,9 +20,10 @@ public class BinarySearchTree<T extends Comparable<T>> extends NodeTree<T> {
 		insertData(this.getRootNode(), data);
 	}
 
-	public void delete(T data) {
+	public boolean delete(T data) {
 		Node<T> root = deleteDataFromNode(this.getRootNode(), data);
 		this.setRootNode(root);
+		return true;
 	}
 
 	// All nodes have exactly 2 entries

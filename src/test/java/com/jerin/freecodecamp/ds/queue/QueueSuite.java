@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ SimpleQueueTest.class, })
+@SuiteClasses({ SimpleQueueTest.class, MinHeapTest.class })
 public class QueueSuite {
 
 }

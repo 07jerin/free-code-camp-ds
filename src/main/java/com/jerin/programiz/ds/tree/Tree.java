@@ -8,7 +8,7 @@ public interface Tree<T> {
 
 	public abstract void insert(T data);
 
-	public abstract void delete(T data);
+	public abstract boolean delete(T data);
 	
 	public abstract List<T> inOrderTravesal();
 	

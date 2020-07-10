@@ -3,13 +3,13 @@ package com.jerin.programiz.ds.tree;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class CompleteTree<T> implements Tree<T> {
+public abstract class CompleteTree<T extends Comparable<T>> implements Tree<T> {
 
 	protected T[] storage;
 	protected int elementCount;
 
 	public CompleteTree(int defaultSize) {
-		storage = (T[]) new Object[defaultSize];
+		storage = (T[]) new Comparable[defaultSize];
 	}
 
 	protected void checkAndIncreaseSize() {
@@ -18,11 +18,35 @@ public abstract class CompleteTree<T> implements Tree<T> {
 		}
 	}
 
+	protected int getLastIndex() {
+		return elementCount - 1;
+	}
+
+	protected T getLastElement() {
+		return storage[getLastIndex()];
+	}
+
+	protected void deleteLast() {
+		storage[getLastIndex()] = null;
+		elementCount--;
+	}
+
 	protected int insertLast(T data) {
 		this.checkAndIncreaseSize();
 		storage[elementCount] = data;
 		elementCount++;
 		return elementCount - 1;
+	}
+
+	protected T getIndexData(int index) {
+		if (index < 0 && index >= elementCount) {
+			throw new Error("Index out of bound");
+		}
+		return storage[index];
+	}
+
+	protected T getParent(int childIndex) {
+		return storage[getParentIndex(childIndex)];
 	}
 
 	protected int getParentIndex(int childIndex) {
@@ -37,16 +61,25 @@ public abstract class CompleteTree<T> implements Tree<T> {
 		return getChild(n, true);
 	}
 
+	protected T getRootValue() {
+		return storage[0];
+	}
+
 	protected T getRightChild(int n) {
 		return getChild(n, false);
 	}
 
-	private T getChild(int n, boolean isLeftChild) {
+	protected int getChildIndex(int n, boolean isLeftChild) {
 		int childIndex = isLeftChild ? 2 * n + 1 : 2 * n + 2;
-		if (childIndex > elementCount) {
-			return null;
+		if (childIndex > elementCount - 1) {
+			return -1;
 		}
-		return storage[childIndex];
+		return childIndex;
+	}
+
+	private T getChild(int n, boolean isLeftChild) {
+		int childIndex = getChildIndex(n, isLeftChild);
+		return childIndex >= 0 ? storage[childIndex] : null;
 	}
 
 	@Override

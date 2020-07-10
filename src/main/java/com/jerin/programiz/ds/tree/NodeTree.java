@@ -19,7 +19,7 @@ public abstract class NodeTree<T> implements Tree<T> {
 
 	public abstract void insert(T data);
 
-	public abstract void delete(T data);
+	public abstract boolean delete(T data);
 
 	@Override
 	public List<T> inOrderTravesal() {
