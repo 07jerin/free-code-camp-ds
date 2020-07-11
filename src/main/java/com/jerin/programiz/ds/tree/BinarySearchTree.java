@@ -1,5 +1,8 @@
 package com.jerin.programiz.ds.tree;
 
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+
 import com.jerin.common.structures.ds.Node;
 
 public class BinarySearchTree<T extends Comparable<T>> extends NodeTree<T> {
@@ -24,6 +27,64 @@ public class BinarySearchTree<T extends Comparable<T>> extends NodeTree<T> {
 		Node<T> root = deleteDataFromNode(this.getRootNode(), data);
 		this.setRootNode(root);
 		return true;
+	}
+
+	private Node<T> deleteDataFromNode(Node<T> node, T data) {
+		if (node == null) {
+			return null;
+		}
+
+		if (data.compareTo(node.getData()) < 0) {
+			node.setLeftNode(deleteDataFromNode(node.getLeftNode(), data));
+		} else if (data.compareTo(node.getData()) > 0) {
+			node.setRightNode(deleteDataFromNode(node.getRightNode(), data));
+		} else {
+			// Node found
+			if (node.getLeftNode() == null && node.getRightNode() == null) {
+				// Return null if no left or right node
+				return null;
+			} else if (node.getLeftNode() == null) {
+				// Replace with Right Node
+				return node.getRightNode();
+			} else if (node.getLeftNode() == null) {
+				// Replace with right node
+				return node.getRightNode();
+			} else {
+				// Set largest value from left node
+				Node<T> newNode = getLargestNode(node.getLeftNode());
+				node.setData(newNode.getData());
+
+				// delete the new data from left node
+				node.setLeftNode(deleteDataFromNode(node.getLeftNode(), newNode.getData()));
+			}
+		}
+		return node;
+
+	}
+
+	private Node<T> getLargestNode(Node<T> node) {
+		while (node.getRightNode() != null) {
+			node = node.getRightNode();
+		}
+		return node;
+	}
+
+	public String levelOrderTraversal() {
+		Queue<Node<T>> childrenQ = new ArrayBlockingQueue<>(50);
+		StringBuilder sb = new StringBuilder("");
+		childrenQ.add(getRootNode());
+		while (childrenQ.peek() != null) {
+			Node<T> node = childrenQ.poll();
+			sb.append(",");
+			sb.append(node.getData());
+			if (node.getLeftNode() != null) {
+				childrenQ.add(node.getLeftNode());
+			}
+			if (node.getRightNode() != null) {
+				childrenQ.add(node.getRightNode());
+			}
+		}
+		return sb.toString();
 	}
 
 	// All nodes have exactly 2 entries
@@ -57,28 +118,6 @@ public class BinarySearchTree<T extends Comparable<T>> extends NodeTree<T> {
 			return false;
 		}
 		return isFullTree(subTree.getRightNode()) && isFullTree(subTree.getLeftNode());
-	}
-
-	private Node<T> deleteDataFromNode(Node<T> node, T data) {
-		if (node == null) {
-			return null;
-		}
-		if (node.getData().compareTo(data) > 0) {
-			node.setLeftNode(deleteDataFromNode(node.getLeftNode(), data));
-		} else if (node.getData().compareTo(data) < 0) {
-			node.setRightNode(deleteDataFromNode(node.getRightNode(), data));
-		} else {
-
-			if (node.getLeftNode() == null) {
-				return node.getRightNode();
-			} else if (node.getRightNode() == null) {
-				return node.getLeftNode();
-			}
-
-			node.setData(getMinValue(node.getRightNode()));
-			node.setRightNode(deleteDataFromNode(node.getRightNode(), node.getData()));
-		}
-		return node;
 	}
 
 	private void insertData(Node<T> tree, T newData) {
