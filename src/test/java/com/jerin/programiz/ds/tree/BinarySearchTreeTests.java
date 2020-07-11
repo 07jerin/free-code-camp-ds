@@ -187,6 +187,29 @@ public class BinarySearchTreeTests extends TestCase {
 		assertEquals(",20,4,50,8,30,70,9,12", binayTree.levelOrderTraversal());
 	}
 	
+	public void testheight() {
+		BinarySearchTree<Integer> binayTree  = new BinarySearchTree<Integer>(20);
+		binayTree.insert(4);
+		binayTree.insert(50); 
+		assertEquals(1, binayTree.height());
+		
+		binayTree.insert(30); 
+		binayTree.insert(8); 
+		binayTree.insert(9); 
+		assertEquals(3, binayTree.height());
+		
+		binayTree.insert(12); 
+		binayTree.insert(70); 
+		assertEquals(4, binayTree.height());
+		
+		binayTree.insert(41); 
+		binayTree.insert(42); 
+		assertEquals(4, binayTree.height());
+		
+		binayTree.insert(42); 
+		assertEquals(5, binayTree.height());
+	}
+	
 	
 	
 

@@ -113,6 +113,12 @@ public abstract class CompleteTree<T extends Comparable<T>> implements Tree<T> {
 	}
 
 	@Override
+
+	public int height() {
+		throw new RuntimeException("Not implemenmted");
+	}
+
+	@Override
 	public T maxValue() {
 		// TODO Auto-generated method stub
 		return null;

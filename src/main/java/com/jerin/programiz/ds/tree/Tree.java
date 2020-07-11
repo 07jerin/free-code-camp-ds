@@ -19,5 +19,7 @@ public interface Tree<T> {
 	public abstract T minValue();
 	
 	public abstract T maxValue();
+	
+	public abstract int height();
 
 }

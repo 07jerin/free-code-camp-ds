@@ -147,4 +147,20 @@ public class BinarySearchTree<T extends Comparable<T>> extends NodeTree<T> {
 		return isPresent;
 	}
 
+	@Override
+	public int height() {
+		return Math.max(calcHeight(getRootNode().getLeftNode(), 0), calcHeight(getRootNode().getRightNode(), 0));
+
+	}
+
+	private int calcHeight(Node<T> node, int currenHeight) {
+		if (node == null)
+			return currenHeight;
+		else {
+			++currenHeight;
+			return Math.max(calcHeight(node.getLeftNode(), currenHeight),
+					calcHeight(node.getRightNode(), currenHeight));
+		}
+	}
+
 }
