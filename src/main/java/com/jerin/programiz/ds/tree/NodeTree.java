@@ -111,5 +111,10 @@ public abstract class NodeTree<T> implements Tree<T> {
 			return "";
 		return this.inOrderTravesal().stream().map(Object::toString).collect(Collectors.joining(","));
 	}
+	
+	public void print(Node<T> node) {
+//		NodePrinter.print(node);
+		
+	}
 
 }

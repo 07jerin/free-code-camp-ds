@@ -8,9 +8,15 @@ public class BinarySearchTreeTests extends TestCase {
 	protected void setUp() {
 		
 	}
+	public void testAll() {
+		testIsPresent(new BinarySearchTree<Integer>(TreeUtils.getSample1To9Tree()));
+		testInsert(new BinarySearchTree<Integer>(10));
+		testDelete(new BinarySearchTree<Integer>(TreeUtils.getSample1To9Tree()));
+		testSimpleDelete( new BinarySearchTree<Integer>(4));
+		testCrud(new BinarySearchTree<Integer>(20));
+	}
 
-	public void testIsPresent() {
-		NodeTree<Integer> binayTree  = new BinarySearchTree<Integer>(TreeUtils.getSample1To9Tree());
+	protected void testIsPresent(NodeTree<Integer> binayTree  ) {
 		assertEquals(true, binayTree.isPresent(1));
 		assertEquals(true, binayTree.isPresent(2));
 		assertEquals(false, binayTree.isPresent(10));
@@ -20,8 +26,7 @@ public class BinarySearchTreeTests extends TestCase {
 	}
 	
 	
-	public void testInsert() {
-		NodeTree<Integer> binayTree = new BinarySearchTree<Integer>(10);
+	protected void testInsert(NodeTree<Integer> binayTree  ) {
 		binayTree.insert(30);
 		binayTree.insert(20);
 		assertEquals("10,20,30", binayTree.toString());
@@ -34,8 +39,7 @@ public class BinarySearchTreeTests extends TestCase {
 		
 	}
 	
-	public void testSimpleDelete() {
-		NodeTree<Integer> binayTree  = new BinarySearchTree<Integer>(4);
+	protected void testSimpleDelete(NodeTree<Integer> binayTree  ) {
 		binayTree.insert(3);
 		binayTree.insert(5);
 		binayTree.delete(5);
@@ -45,8 +49,7 @@ public class BinarySearchTreeTests extends TestCase {
 		assertEquals("4,5",  binayTree.toString());
 	}
 	
-	public void testDelete() {
-		NodeTree<Integer> binayTree  = new BinarySearchTree<Integer>(TreeUtils.getSample1To9Tree());
+	protected void testDelete(NodeTree<Integer> binayTree  ) {
 		binayTree.delete(5);
 		assertEquals("1,2,3,4,6,7,8,9",  binayTree.toString());
 		binayTree.delete(7);
@@ -69,8 +72,7 @@ public class BinarySearchTreeTests extends TestCase {
 	}
 	
 	
-	public void testCrud() {
-		NodeTree<Integer> binayTree  = new BinarySearchTree<Integer>(20);
+	protected void testCrud(NodeTree<Integer> binayTree) {
 		binayTree.insert(4);
 		binayTree.insert(56); 
 		binayTree.insert(8); 

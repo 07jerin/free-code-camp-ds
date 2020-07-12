@@ -5,6 +5,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import com.jerin.common.structures.ds.Node;
 
+//TODO: Implemenmt the BF and height for each node
 public class BinarySearchTree<T extends Comparable<T>> extends NodeTree<T> {
 
 	public BinarySearchTree(Node<T> root) {
@@ -23,6 +24,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends NodeTree<T> {
 		insertData(this.getRootNode(), data);
 	}
 
+	@Override
 	public boolean delete(T data) {
 		Node<T> root = deleteDataFromNode(this.getRootNode(), data);
 		this.setRootNode(root);
